@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notification Inspector</string>
+    
+    <!-- Service -->
+    <string name="notification_listener_label">Notification Inspector Listener</string>
+    
+    <!-- Main Activity -->
+    <string name="listener_label">Listener:</string>
+    <string name="listener_connected">Connected</string>
+    <string name="listener_connecting">Connecting...</string>
+    <string name="listener_disabled">Not Enabled</string>
+
+    <string name="captured_count">%d captured</string>
+
+    <string name="permission_explanation">This app needs notification access permission to capture and debug notifications from other apps.</string>
+    <string name="enable_notification_access">Enable Notification Access</string>
+
+    <string name="clear_all">Clear All</string>
+    <string name="clear_confirmation">Clear all %d captured notifications?</string>
+    <string name="clear">Clear</string>
+
+    <string name="no_notifications">No notifications captured</string>
+    <string name="waiting_for_notifications">Notifications will appear here as they are posted or removed by apps</string>
+    
+    <!-- List Item -->
+    <string name="view_details">View details</string>
+    
+    <!-- Detail Activity -->
+    <string name="notification_detail_title">Notification Details</string>
+    <string name="notification_not_found">Notification not found</string>
+    <string name="notification_debug_share_subject">Notification Debug Info</string>
+</resources>

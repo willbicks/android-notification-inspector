@@ -41,85 +41,89 @@ import com.willbicks.notification_inspector.ui.theme.Red500
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationDetailScreen(
-    notification: CapturedNotification,
-    onNavigateBack: () -> Unit
+  notification: CapturedNotification,
+  onNavigateBack: () -> Unit,
 ) {
-    val debugText = notification.toDebugString()
-    val isPosted = notification.eventType == CapturedNotification.EventType.POSTED
-    val eventColor = if (isPosted) Green500 else Red500
+  val debugText = notification.toDebugString()
+  val isPosted = notification.eventType == CapturedNotification.EventType.POSTED
+  val eventColor = if (isPosted) Green500 else Red500
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.notification_detail_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+  Scaffold(
+    topBar = {
+      TopAppBar(
+        title = { Text(stringResource(R.string.notification_detail_title)) },
+        navigationIcon = {
+          IconButton(onClick = onNavigateBack) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = "Back",
             )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            // Header section
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Event type badge
-                Text(
-                    text = notification.eventType.name,
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    modifier = Modifier
-                        .background(
-                            color = eventColor,
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                )
+          }
+        },
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+          ),
+      )
+    },
+  ) { paddingValues ->
+    Column(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .padding(paddingValues),
+    ) {
+      // Header section
+      Row(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        // Event type badge
+        Text(
+          text = notification.eventType.name,
+          color = Color.White,
+          fontSize = 12.sp,
+          modifier =
+            Modifier
+              .background(
+                color = eventColor,
+                shape = RoundedCornerShape(4.dp),
+              ).padding(horizontal = 8.dp, vertical = 4.dp),
+        )
 
-                Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
-                // Package name
-                Text(
-                    text = notification.packageName,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp
-                )
-            }
+        // Package name
+        Text(
+          text = notification.packageName,
+          fontFamily = FontFamily.Monospace,
+          fontSize = 14.sp,
+        )
+      }
 
-            // Debug content
-            SelectionContainer {
-                val verticalScrollState = rememberScrollState()
-                val horizontalScrollState = rememberScrollState()
-                
-                Text(
-                    text = debugText,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp,
-                    lineHeight = 16.sp,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(verticalScrollState)
-                        .horizontalScroll(horizontalScrollState)
-                        .padding(16.dp)
-                )
-            }
-        }
+      // Debug content
+      SelectionContainer {
+        val verticalScrollState = rememberScrollState()
+        val horizontalScrollState = rememberScrollState()
+
+        Text(
+          text = debugText,
+          fontFamily = FontFamily.Monospace,
+          fontSize = 12.sp,
+          lineHeight = 16.sp,
+          modifier =
+            Modifier
+              .fillMaxSize()
+              .verticalScroll(verticalScrollState)
+              .horizontalScroll(horizontalScrollState)
+              .padding(16.dp),
+        )
+      }
     }
+  }
 }

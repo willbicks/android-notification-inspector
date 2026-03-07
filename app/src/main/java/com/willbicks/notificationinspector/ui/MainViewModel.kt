@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector.ui
+package com.willbicks.notificationinspector.ui
 
 import android.app.Application
 import android.content.ComponentName
@@ -7,10 +7,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.willbicks.notification_inspector.NotificationListener
-import com.willbicks.notification_inspector.NotificationRepository
-import com.willbicks.notification_inspector.model.CapturedNotification
-import com.willbicks.notification_inspector.ui.screens.ConnectionState
+import com.willbicks.notificationinspector.NotificationListener
+import com.willbicks.notificationinspector.NotificationRepository
+import com.willbicks.notificationinspector.model.CapturedNotification
+import com.willbicks.notificationinspector.ui.screens.ConnectionState
 
 class MainViewModel(
   application: Application,

@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector
+package com.willbicks.notificationinspector
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,10 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.willbicks.notification_inspector.ui.MainViewModel
-import com.willbicks.notification_inspector.ui.screens.ConnectionState
-import com.willbicks.notification_inspector.ui.screens.MainScreen
-import com.willbicks.notification_inspector.ui.theme.NotificationInspectorTheme
+import com.willbicks.notificationinspector.ui.MainViewModel
+import com.willbicks.notificationinspector.ui.screens.ConnectionState
+import com.willbicks.notificationinspector.ui.screens.MainScreen
+import com.willbicks.notificationinspector.ui.theme.NotificationInspectorTheme
 
 /**
  * Main activity displaying the list of captured notifications

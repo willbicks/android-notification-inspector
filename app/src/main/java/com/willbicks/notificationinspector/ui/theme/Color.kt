@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector.ui.theme
+package com.willbicks.notificationinspector.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

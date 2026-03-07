@@ -1,9 +1,9 @@
-package com.willbicks.notification_inspector
+package com.willbicks.notificationinspector
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import com.willbicks.notification_inspector.model.CapturedNotification
+import com.willbicks.notificationinspector.model.CapturedNotification
 
 /**
  * NotificationListenerService that captures all notifications posted or removed

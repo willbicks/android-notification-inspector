@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector.ui.screens
+package com.willbicks.notificationinspector.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,12 +38,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.willbicks.notification_inspector.R
-import com.willbicks.notification_inspector.model.CapturedNotification
-import com.willbicks.notification_inspector.ui.components.NotificationItem
-import com.willbicks.notification_inspector.ui.theme.Amber500
-import com.willbicks.notification_inspector.ui.theme.Green500
-import com.willbicks.notification_inspector.ui.theme.Red500
+import com.willbicks.notificationinspector.R
+import com.willbicks.notificationinspector.model.CapturedNotification
+import com.willbicks.notificationinspector.ui.components.NotificationItem
+import com.willbicks.notificationinspector.ui.theme.Amber500
+import com.willbicks.notificationinspector.ui.theme.Green500
+import com.willbicks.notificationinspector.ui.theme.Red500
 
 enum class ConnectionState {
   CONNECTED,

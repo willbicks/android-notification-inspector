@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector.ui.theme
+package com.willbicks.notificationinspector.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

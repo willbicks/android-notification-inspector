@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-  namespace = "com.willbicks.notification_inspector"
+  namespace = "com.willbicks.notificationinspector"
   compileSdk = 34
 
   defaultConfig {
-    applicationId = "com.willbicks.notification_inspector"
+    applicationId = "com.willbicks.notificationinspector"
     minSdk = 26
     targetSdk = 34
     versionCode = 1

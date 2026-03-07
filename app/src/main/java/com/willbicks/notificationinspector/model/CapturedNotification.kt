@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector.model
+package com.willbicks.notificationinspector.model
 
 import android.app.Notification
 import android.service.notification.StatusBarNotification

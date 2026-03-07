@@ -1,4 +1,4 @@
-package com.willbicks.notification_inspector
+package com.willbicks.notificationinspector
 
 import android.content.Context
 import android.content.Intent
@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.willbicks.notification_inspector.model.CapturedNotification
-import com.willbicks.notification_inspector.ui.screens.NotificationDetailScreen
-import com.willbicks.notification_inspector.ui.theme.NotificationInspectorTheme
+import com.willbicks.notificationinspector.model.CapturedNotification
+import com.willbicks.notificationinspector.ui.screens.NotificationDetailScreen
+import com.willbicks.notificationinspector.ui.theme.NotificationInspectorTheme
 
 /**
  * Activity for displaying detailed information about a captured notification

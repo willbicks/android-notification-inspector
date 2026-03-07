@@ -1,8 +1,8 @@
-package com.willbicks.notification_inspector
+package com.willbicks.notificationinspector
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.willbicks.notification_inspector.model.CapturedNotification
+import com.willbicks.notificationinspector.model.CapturedNotification
 
 /**
  * Thread-safe singleton repository for storing captured notifications.

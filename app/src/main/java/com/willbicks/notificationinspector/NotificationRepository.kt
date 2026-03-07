@@ -12,17 +12,17 @@ object NotificationRepository {
   private const val MAX_NOTIFICATIONS = 500
 
   private val _notifications = mutableListOf<CapturedNotification>()
-  private val _notificationsLiveData = MutableLiveData<List<CapturedNotification>>(emptyList())
+  private val notificationsLiveData = MutableLiveData<List<CapturedNotification>>(emptyList())
 
   private val _isListenerConnected = MutableLiveData(false)
 
   // Counter for generating unique event IDs
-  private var _nextEventId: Long = 0L
+  private var nextEventId: Long = 0L
 
   /**
    * Observable list of captured notifications (newest first)
    */
-  val notifications: LiveData<List<CapturedNotification>> = _notificationsLiveData
+  val notifications: LiveData<List<CapturedNotification>> = notificationsLiveData
 
   /**
    * Observable connection state of the NotificationListenerService
@@ -34,7 +34,7 @@ object NotificationRepository {
    */
   @Synchronized
   fun addNotification(notification: CapturedNotification) {
-    val notificationWithId = notification.copy(eventId = _nextEventId++)
+    val notificationWithId = notification.copy(eventId = nextEventId++)
 
     // Add at the beginning (newest first)
     _notifications.add(0, notificationWithId)
@@ -45,7 +45,7 @@ object NotificationRepository {
     }
 
     // Post updated list
-    _notificationsLiveData.postValue(_notifications.toList())
+    notificationsLiveData.postValue(_notifications.toList())
   }
 
   /**
@@ -67,8 +67,8 @@ object NotificationRepository {
   @Synchronized
   fun clear() {
     _notifications.clear()
-    _nextEventId = 0L
-    _notificationsLiveData.postValue(emptyList())
+    nextEventId = 0L
+    notificationsLiveData.postValue(emptyList())
   }
 
   /**

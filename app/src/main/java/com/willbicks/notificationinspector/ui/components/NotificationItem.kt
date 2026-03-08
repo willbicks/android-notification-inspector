@@ -56,113 +56,92 @@ fun NotificationItem(
         containerColor = MaterialTheme.colorScheme.surface,
       ),
   ) {
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      verticalAlignment = Alignment.CenterVertically,
+    Column(
+      modifier = Modifier.padding(12.dp),
     ) {
-      // Event type indicator bar
-      Box(
-        modifier =
-          Modifier
-            .width(4.dp)
-            .height(100.dp)
-            .background(eventColor),
-      )
-
-      // Content column
-      Column(
-        modifier =
-          Modifier
-            .weight(1f)
-            .padding(12.dp),
+      // Top row
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
       ) {
-        // Top row: Event type badge and capture time
-        Row(
-          modifier = Modifier.fillMaxWidth(),
-          verticalAlignment = Alignment.CenterVertically,
-        ) {
-          // Event type badge
-          Text(
-            text = notification.eventType.name,
-            color = Color.White,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold,
-            modifier =
-              Modifier
-                .background(
-                  color = eventColor,
-                  shape = RoundedCornerShape(4.dp),
-                ).padding(horizontal = 6.dp, vertical = 2.dp),
-          )
-
-          Spacer(modifier = Modifier.weight(1f))
-
-          // Capture time
-          Text(
-            text = notification.getFormattedCaptureTime(),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
-        }
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        // Package name
+        // Event type badge
         Text(
-          text = notification.packageName,
-          fontFamily = FontFamily.Monospace,
-          fontSize = 12.sp,
-          color = MaterialTheme.colorScheme.primary,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Title
-        val displayTitle = notification.title ?: "(no title)"
-        Text(
-          text = displayTitle,
-          style = MaterialTheme.typography.bodyMedium,
-          fontWeight = FontWeight.Bold,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-        )
-
-        // Content text
-        if (notification.text != null) {
-          Text(
-            text = notification.text,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-          )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Key
-        Text(
-          text = "key: ${notification.key}",
-          fontFamily = FontFamily.Monospace,
+          text = notification.eventType.name,
+          color = Color.White,
           fontSize = 10.sp,
+          fontWeight = FontWeight.Bold,
+          modifier =
+            Modifier
+              .background(
+                color = eventColor,
+                shape = RoundedCornerShape(4.dp),
+              ).padding(horizontal = 6.dp, vertical = 2.dp),
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        // Capture time
+        Text(
+          text = notification.getFormattedCaptureTime(),
+          style = MaterialTheme.typography.bodySmall,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
         )
       }
 
-      // Chevron
-      Icon(
-        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-        contentDescription = stringResource(R.string.view_details),
-        modifier =
-          Modifier
-            .padding(end = 8.dp)
-            .size(24.dp),
-        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
+      Spacer(modifier = Modifier.height(12.dp))
+
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        // Content column
+        Column(
+          modifier =
+            Modifier
+              .weight(1f),
+        ) {
+          // Package name
+          Text(
+            text = notification.packageName,
+            fontFamily = FontFamily.Monospace,
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.primary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+          )
+
+          Spacer(modifier = Modifier.height(8.dp))
+
+          // Title
+          val displayTitle = notification.title ?: "(no title)"
+          Text(
+            text = displayTitle,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+          )
+
+          // Content text
+          if (notification.text != null) {
+            Text(
+              text = notification.text,
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+              maxLines = 2,
+              overflow = TextOverflow.Ellipsis,
+            )
+          }
+        }
+
+        // Chevron
+        Icon(
+          imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+          contentDescription = stringResource(R.string.view_details),
+          modifier = Modifier.size(24.dp),
+          tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+      }
     }
   }
 }

@@ -28,6 +28,14 @@
     
     <!-- Detail Activity -->
     <string name="notification_detail_title">Notification Details</string>
+
+    <!-- Notification detail section headers -->
+    <string name="detail_section_event_info">Event Info</string>
+    <string name="detail_section_status_bar_notification">StatusBarNotification</string>
+    <string name="detail_section_notification">Notification</string>
+    <string name="detail_section_style">Style</string>
+    <string name="detail_section_actions">Actions</string>
+    <string name="detail_section_extras">Extras</string>
     <string name="notification_not_found">Notification not found</string>
     <string name="notification_debug_share_subject">Notification Debug Info</string>
 </resources>

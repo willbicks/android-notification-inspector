@@ -3,6 +3,7 @@ package com.willbicks.notificationinspector
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.willbicks.notificationinspector.extraction.NotificationFieldExtractor
 import com.willbicks.notificationinspector.model.CapturedNotification
 
 /**
@@ -31,11 +32,7 @@ class NotificationListener : NotificationListenerService() {
     Log.d(TAG, "Notification posted: ${sbn.key}")
 
     try {
-      val captured =
-        CapturedNotification.fromStatusBarNotification(
-          sbn,
-          CapturedNotification.EventType.POSTED,
-        )
+      val captured = NotificationFieldExtractor.extract(sbn, CapturedNotification.EventType.POSTED)
       NotificationRepository.addNotification(captured)
     } catch (e: Exception) {
       Log.e(TAG, "Error capturing notification", e)
@@ -52,11 +49,7 @@ class NotificationListener : NotificationListenerService() {
     Log.d(TAG, "Notification removed: ${sbn.key}, reason: $reasonStr")
 
     try {
-      val captured =
-        CapturedNotification.fromStatusBarNotification(
-          sbn,
-          CapturedNotification.EventType.REMOVED,
-        )
+      val captured = NotificationFieldExtractor.extract(sbn, CapturedNotification.EventType.REMOVED)
       NotificationRepository.addNotification(captured)
     } catch (e: Exception) {
       Log.e(TAG, "Error capturing removed notification", e)

@@ -1,7 +1,8 @@
 package com.willbicks.notificationinspector.model
 
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
@@ -27,16 +28,22 @@ data class CapturedNotification(
   }
 
   companion object {
-    private val CAPTURE_TIME_FORMAT = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
-    private val POST_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    private val CAPTURE_TIME_FORMAT: DateTimeFormatter =
+      DateTimeFormatter
+        .ofPattern("HH:mm:ss.SSS", Locale.getDefault())
+        .withZone(ZoneId.systemDefault())
+    private val POST_TIME_FORMAT: DateTimeFormatter =
+      DateTimeFormatter
+        .ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        .withZone(ZoneId.systemDefault())
   }
 
   /**
    * Returns a formatted timestamp string for display
    */
-  fun getFormattedCaptureTime(): String = CAPTURE_TIME_FORMAT.format(Date(captureTime))
+  fun getFormattedCaptureTime(): String = CAPTURE_TIME_FORMAT.format(Instant.ofEpochMilli(captureTime))
 
-  fun getFormattedPostTime(): String = POST_TIME_FORMAT.format(Date(postTime))
+  fun getFormattedPostTime(): String = POST_TIME_FORMAT.format(Instant.ofEpochMilli(postTime))
 
   /**
    * Returns a brief summary for list display

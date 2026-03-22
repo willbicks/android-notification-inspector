@@ -31,11 +31,15 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
 import com.willbicks.notificationinspector.model.FieldValue
 import com.willbicks.notificationinspector.model.NotificationField
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-private val DETAIL_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+private val DETAIL_TIME_FORMAT: DateTimeFormatter =
+  DateTimeFormatter
+    .ofPattern("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+    .withZone(ZoneId.systemDefault())
 
 /**
  * Renders a single notification field row.
@@ -135,7 +139,7 @@ fun FieldRow(
 
               is FieldValue.TimestampValue -> {
                 Text(
-                  text = DETAIL_TIME_FORMAT.format(Date(value.millis)),
+                  text = DETAIL_TIME_FORMAT.format(Instant.ofEpochMilli(value.millis)),
                   style = MaterialTheme.typography.bodySmall,
                   fontFamily = FontFamily.Monospace,
                   fontSize = 12.sp,

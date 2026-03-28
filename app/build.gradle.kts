@@ -52,13 +52,9 @@ dependencies {
   implementation("androidx.compose.ui:ui-tooling-preview")
   implementation("androidx.compose.material3:material3")
 
-  // Compose runtime for LiveData integration
-  implementation("androidx.compose.runtime:runtime-livedata")
-
   // Lifecycle ViewModel with Compose
   implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
   implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-  implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
   // Debug tooling
   debugImplementation("androidx.compose.ui:ui-tooling")

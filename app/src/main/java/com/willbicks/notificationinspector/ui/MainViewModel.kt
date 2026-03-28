@@ -4,36 +4,48 @@ import android.app.Application
 import android.content.ComponentName
 import android.provider.Settings
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.willbicks.notificationinspector.NotificationListener
 import com.willbicks.notificationinspector.NotificationRepository
 import com.willbicks.notificationinspector.model.CapturedNotification
 import com.willbicks.notificationinspector.ui.screens.ConnectionState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 class MainViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
-  val notifications: LiveData<List<CapturedNotification>> = NotificationRepository.notifications
+  private val _isListenerEnabled = MutableStateFlow(false)
+  val isListenerEnabled: StateFlow<Boolean> = _isListenerEnabled.asStateFlow()
 
-  private val _isListenerEnabled = MutableLiveData(false)
-  val isListenerEnabled: LiveData<Boolean> = _isListenerEnabled
+  val notifications: StateFlow<List<CapturedNotification>> =
+    NotificationRepository.notificationsFlow
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList(),
+      )
 
-  private val _connectionState =
-    MediatorLiveData<ConnectionState>().apply {
-      addSource(NotificationRepository.isListenerConnected) { isConnected ->
-        value = computeConnectionState(isConnected, _isListenerEnabled.value ?: false)
-      }
-      addSource(_isListenerEnabled) { enabled ->
-        value =
-          computeConnectionState(
-            NotificationRepository.isListenerConnected.value ?: false,
-            enabled,
-          )
-      }
-    }
-  val connectionState: LiveData<ConnectionState> = _connectionState
+  private val isListenerConnected: StateFlow<Boolean> =
+    NotificationRepository.isListenerConnectedFlow
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+      )
+
+  val connectionState: StateFlow<ConnectionState> =
+    combine(_isListenerEnabled, isListenerConnected) { enabled, connected ->
+      computeConnectionState(connected, enabled)
+    }.stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(5000),
+      initialValue = ConnectionState.DISABLED,
+    )
 
   private fun computeConnectionState(
     isConnected: Boolean,
@@ -65,8 +77,4 @@ class MainViewModel(
   fun clearNotifications() {
     NotificationRepository.clear()
   }
-
-  fun getNotificationByEventId(eventId: Long): CapturedNotification? = NotificationRepository.getNotificationByEventId(eventId)
-
-  fun getNotificationCount(): Int = NotificationRepository.getCount()
 }

@@ -1,33 +1,25 @@
 package com.willbicks.notificationinspector
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.willbicks.notificationinspector.model.CapturedNotification
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * Thread-safe singleton repository for storing captured notifications.
- * Provides LiveData for observing changes in the UI.
+ * Provides StateFlow for observing changes in the UI.
  */
 object NotificationRepository {
   private const val MAX_NOTIFICATIONS = 500
 
-  private val _notifications = mutableListOf<CapturedNotification>()
-  private val notificationsLiveData = MutableLiveData<List<CapturedNotification>>(emptyList())
+  private val _notificationsFlow = MutableStateFlow<List<CapturedNotification>>(emptyList())
+  val notificationsFlow: StateFlow<List<CapturedNotification>> = _notificationsFlow.asStateFlow()
 
-  private val _isListenerConnected = MutableLiveData(false)
+  private val _isListenerConnectedFlow = MutableStateFlow(false)
+  val isListenerConnectedFlow: StateFlow<Boolean> = _isListenerConnectedFlow.asStateFlow()
 
   // Counter for generating unique event IDs
   private var nextEventId: Long = 0L
-
-  /**
-   * Observable list of captured notifications (newest first)
-   */
-  val notifications: LiveData<List<CapturedNotification>> = notificationsLiveData
-
-  /**
-   * Observable connection state of the NotificationListenerService
-   */
-  val isListenerConnected: LiveData<Boolean> = _isListenerConnected
 
   /**
    * Add a new captured notification event to the repository.
@@ -36,57 +28,45 @@ object NotificationRepository {
   fun addNotification(notification: CapturedNotification) {
     val notificationWithId = notification.copy(eventId = nextEventId++)
 
-    // Add at the beginning (newest first)
-    _notifications.add(0, notificationWithId)
+    val currentList = _notificationsFlow.value.toMutableList()
 
-    // Trim to max size (remove oldest from end)
-    if (_notifications.size > MAX_NOTIFICATIONS) {
-      _notifications.subList(MAX_NOTIFICATIONS, _notifications.size).clear()
+    currentList.add(0, notificationWithId)
+
+    if (currentList.size > MAX_NOTIFICATIONS) {
+      currentList.subList(MAX_NOTIFICATIONS, currentList.size).clear()
     }
 
-    // Post updated list
-    notificationsLiveData.postValue(_notifications.toList())
+    _notificationsFlow.value = currentList
   }
-
-  /**
-   * Get a notification event by its Android notification key.
-   * Note: Multiple events may share the same key (POSTED and REMOVED events).
-   */
-  @Synchronized
-  fun getNotificationByKey(key: String): CapturedNotification? = _notifications.find { it.key == key }
 
   /**
    * Get a notification event by its unique event ID.
    */
-  @Synchronized
-  fun getNotificationByEventId(eventId: Long): CapturedNotification? = _notifications.find { it.eventId == eventId }
+  fun getNotificationByEventId(eventId: Long): CapturedNotification? = _notificationsFlow.value.find { it.eventId == eventId }
 
   /**
    * Clear all captured notification events and reset the ID counter
    */
   @Synchronized
   fun clear() {
-    _notifications.clear()
+    _notificationsFlow.value = emptyList()
     nextEventId = 0L
-    notificationsLiveData.postValue(emptyList())
   }
 
   /**
    * Get the current count of captured notifications
    */
-  @Synchronized
-  fun getCount(): Int = _notifications.size
+  fun getCount(): Int = _notificationsFlow.value.size
 
   /**
    * Update the listener connection state
    */
   fun setListenerConnected(connected: Boolean) {
-    _isListenerConnected.postValue(connected)
+    _isListenerConnectedFlow.value = connected
   }
 
   /**
    * Get all notifications (snapshot)
    */
-  @Synchronized
-  fun getAllNotifications(): List<CapturedNotification> = _notifications.toList()
+  fun getAllNotifications(): List<CapturedNotification> = _notificationsFlow.value
 }

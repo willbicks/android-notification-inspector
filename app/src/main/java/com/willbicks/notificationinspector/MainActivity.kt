@@ -6,11 +6,14 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.willbicks.notificationinspector.ui.MainViewModel
-import com.willbicks.notificationinspector.ui.screens.ConnectionState
 import com.willbicks.notificationinspector.ui.screens.MainScreen
 import com.willbicks.notificationinspector.ui.theme.NotificationInspectorTheme
 
@@ -19,19 +22,31 @@ import com.willbicks.notificationinspector.ui.theme.NotificationInspectorTheme
  * and handling notification listener permission.
  */
 class MainActivity : ComponentActivity() {
-  private lateinit var viewModel: MainViewModel
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
 
     setContent {
       NotificationInspectorTheme {
-        viewModel = viewModel()
+        val viewModel: MainViewModel = viewModel()
+        val lifecycleOwner = LocalLifecycleOwner.current
 
-        val notifications by viewModel.notifications.observeAsState(emptyList())
-        val connectionState by viewModel.connectionState.observeAsState(ConnectionState.DISABLED)
-        val isListenerEnabled by viewModel.isListenerEnabled.observeAsState(false)
+        DisposableEffect(lifecycleOwner) {
+          val observer =
+            LifecycleEventObserver { _, event ->
+              if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.checkPermissionState()
+              }
+            }
+          lifecycleOwner.lifecycle.addObserver(observer)
+          onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+          }
+        }
+
+        val notifications by viewModel.notifications.collectAsState()
+        val connectionState by viewModel.connectionState.collectAsState()
+        val isListenerEnabled by viewModel.isListenerEnabled.collectAsState()
 
         MainScreen(
           notifications = notifications,
@@ -44,14 +59,6 @@ class MainActivity : ComponentActivity() {
           onClearAll = { viewModel.clearNotifications() },
         )
       }
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    // Re-check permission state when returning to the activity
-    if (::viewModel.isInitialized) {
-      viewModel.checkPermissionState()
     }
   }
 
